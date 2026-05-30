@@ -1,61 +1,462 @@
-# Interview Question Gen
+<div align="center">
 
-This folder has been upgraded into a **standalone real GUI project**.
+# 🧑‍💼 Interview Question Gen
 
-Run the project GUI:
+### Hiring and people-ops interface with structured scorecards, candidate/job fit, documents, and review gates.
 
-```bash
-./run_gui.sh
-```
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-Job_History-003B57?logo=sqlite&logoColor=white) ![Local LLM](https://img.shields.io/badge/Local_LLM-Ollama%20%7C%20LM%20Studio%20%7C%20vLLM-111827) ![Cloud LLM](https://img.shields.io/badge/Cloud_LLM-OpenAI%20%7C%20Anthropic%20%7C%20Gemini%20%7C%20Mistral-7C3AED) ![No Fake Data](https://img.shields.io/badge/Policy-No_Fake_Live_Data-red)
 
-Windows:
+**Domain:** `HR / Interviewing` · **Suite:** `HR & Recruiting Suite` · **Accent:** `#fbbf24`
 
-```powershell
-.\run_gui_windows.ps1
-```
+[🚀 Quick Start](#-quick-start) · [✨ Features](#-features) · [🎛️ Customization](#️-customization) · [🧠 LLM Providers](#-llm-providers) · [🧪 Testing](#-testing) · [🧯 Troubleshooting](#-troubleshooting)
 
-Default local URL: `http://127.0.0.1:9127`
-
-This project includes its own FastAPI backend, browser GUI, provider settings, local/cloud LLM routing, encrypted API-key storage, file uploads, job history, exports, and a project-specific plugin configuration.
-
-See `PROJECT_IMPLEMENTATION.md` and `project_config.json` for the applied project-specific features and customization controls.
+</div>
 
 ---
 
-## Original README
+## 🧭 What This Project Does
 
-# interview-question-gen
+**Interview Question Gen** is a standalone, browser-based AI workflow app for **HR / Interviewing**. It turns structured inputs, uploaded files, and project-specific settings into reviewable outputs using a deterministic local engine plus optional local/cloud LLM enhancement.
 
-> **Job description + CV → complete tailored interview question bank.** Behavioral, technical, situational questions with evaluation rubrics, scorecard, red flag probes, legal notes. Exports to Markdown.
+**Core job:** Role/JD → interview kit.
 
-[![PyPI](https://img.shields.io/pypi/v/interview-question-gen?style=flat)](https://pypi.org/project/interview-question-gen/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+**Designed for:** Domain operator, business owner, analyst, or team member who needs this workflow executed reliably.
 
-## Quickstart
+**Why use it:**
+
+- 🧩 **Standalone project folder:** run this project by itself without depending on a central dashboard.
+- 🖥️ **Elegant GUI:** includes project-specific panels, structured forms, upload handling, output preview, and exports.
+- 🧠 **Model-flexible:** choose local models for privacy or cloud models for stronger reasoning.
+- 🧾 **Auditable:** every run is stored in SQLite with inputs, settings, result, and export history.
+- 🚫 **No fake live data:** external systems are only used when real API keys/connectors are configured.
+- 🛡️ **Human review gates:** sensitive legal, medical, hiring, finance, or security outputs are flagged for review.
+
+---
+
+## ✨ Features
+
+- competency matrix
+- behavioral/technical questions
+- scoring rubric
+- follow-ups
+- anti-bias guardrails
+- panel plan
+- answer guide
+
+### 🧱 Built-In Platform Capabilities
+
+- ⚡ **FastAPI backend** with documented JSON endpoints.
+- 🎨 **Responsive web UI** with dark, polished SaaS-style layout.
+- 📁 **File upload and text extraction** for common document/code formats.
+- 🗂️ **Job history** saved locally in `data/*.sqlite3`.
+- 🔐 **Encrypted provider settings** for API keys and local endpoints.
+- 📤 **Exports** to Markdown, JSON, DOCX, and PDF when dependencies are available.
+- 🔌 **Provider routing** for local and cloud LLMs.
+- 🧪 **Local test file** to verify the project runs.
+
+---
+
+## 🎨 UX/UI Design
+
+**UX profile:** `Talent Ops Workspace`
+
+**Workflow layout:** Role/person intake → scoring → workflow stage → document/interview package
+
+**Empty state:** Paste a CV, job description, review notes, or offer inputs. ATS sync needs real connector setup.
+
+### Main UI Components
+
+- Candidate/role profile
+- Scorecard grid
+- Pipeline stage board
+- Interview kit
+- Compliance and tone panel
+
+### Review / Workflow Lanes
+
+- Intake
+- Assess
+- Interview
+- Decide
+- Send
+
+### Metrics Shown in the Interface
+
+- Role fit
+- Skills coverage
+- Risk flags
+- Next-step clarity
+
+### Quick Actions
+
+- Build scorecard
+- Generate interview kit
+- Review compensation/doc terms
+- Create follow-up actions
+
+---
+
+## 🧩 Project Inputs
+
+These are the main fields exposed by the GUI and `/api/run`. Required fields are enforced before execution.
+
+| Field | Type | Required | Default | Purpose |
+|---|---:|:---:|---|---|
+| `role`<br>Role | select | Yes | — | Affects input: Role. |
+| `jd`<br>JD | text | Yes | — | Affects input: JD. |
+| `work_brief`<br>Work brief / source text / URL / instructions | textarea | Yes | — | Paste the material, URL, description, or instruction needed for this project. |
+
+---
+
+## 🎛️ Customization
+
+This project is not a generic prompt box. The customization controls are connected to workflow behavior, validation, output shape, and export format.
+
+| Field | Type | Required | Default | Purpose |
+|---|---:|:---:|---|---|
+| `execution_mode`<br>Execution mode | select | No | Production | Controls strictness, depth, and output format for this project workflow. |
+| `role`<br>role | select | No | — | Affects customization: role. |
+| `seniority`<br>seniority | select | No | intern | Affects customization: seniority. |
+| `interview_round`<br>interview round | text | No | — | Affects customization: interview round. |
+| `skill_focus`<br>skill focus | text | No | — | Affects customization: skill focus. |
+| `question_difficulty`<br>question difficulty | text | No | — | Affects customization: question difficulty. |
+| `company_values`<br>company values | text | No | — | Affects customization: company values. |
+| `scoring_style`<br>scoring style | select | No | — | Affects customization: scoring style. |
+| `output_format`<br>output format | select | No | Markdown | Affects customization: output format. |
+| `language`<br>language | select | No | English | Affects customization: language. |
+| `privacy_mode`<br>privacy mode | select | No | cloud allowed | Affects customization: privacy mode. |
+| `confidence_threshold`<br>Confidence threshold | slider | No | 75 | Items below this confidence are escalated to the human review queue. |
+
+### Select / Option Controls
+
+- **Execution mode**: Draft, Production, Audit / strict review, JSON/API output
+- **seniority**: intern, junior, mid-level, senior, lead, executive
+- **output format**: Markdown, JSON, CSV, PDF, DOCX, XLSX
+- **language**: English, Arabic, Egyptian Arabic, French, German, Spanish
+- **privacy mode**: cloud allowed, local only, redact sensitive data
+
+---
+
+## 🧠 LLM Providers
+
+You can run the project with the local deterministic engine, or enhance the output with a configured LLM provider.
+
+### Supported Provider Types
+
+| Provider Type | Examples | Best For |
+|---|---|---|
+| Local OpenAI-compatible | Ollama, LM Studio, vLLM | Private files, offline/local workflows, cost control |
+| Cloud OpenAI-compatible | OpenAI, OpenRouter, custom gateway | General high-quality generation and structured output |
+| Anthropic | Claude models | Long-context reasoning and document-heavy workflows |
+| Google Gemini | Gemini models | Multimodal or Google ecosystem workflows |
+| Mistral | Mistral API | Fast European cloud models |
+| Azure OpenAI | Azure deployments | Enterprise-controlled cloud deployment |
+| AWS Bedrock | Bedrock-hosted models | AWS enterprise environments |
+
+### Recommended Model Usage
+
+| Use Case | Recommendation |
+|---|---|
+| Drafting | fast cloud or local instruct model |
+| Reasoning | strong reasoning model |
+| Private documents | local model via Ollama/LM Studio/vLLM |
+| Vision/PDF pages | vision-capable model when image pages are used |
+
+---
+
+## 🚀 Quick Start
+
+### 1) Clone or open this folder
 
 ```bash
-pip install interview-question-gen
-
-# From JD only
-python -m interview_question_gen job_description.txt --markdown questions.md
-
-# With candidate CV for tailored questions
-python -m interview_question_gen job_description.txt candidate_cv.pdf --markdown questions.md
-
-# 90-minute panel of 3
-python -m interview_question_gen jd.txt cv.pdf --duration 90 --panel 3
+cd interview-question-gen
 ```
 
-## What's generated
+### 2) Run on macOS / Linux / WSL
 
-- **Tailored questions** — specific to this role AND this candidate's background
-- **5-point rubric** per question — exactly what poor vs exceptional looks like
-- **Follow-up probes** — for when the first answer is shallow
-- **CV deep-dive** — questions targeting specific items on the CV to verify
-- **Weighted scorecard** — dimensions, weights, pass thresholds
-- **Knockout criteria** — automatic rejections
-- **Legal notes** — questions to avoid (discriminatory)
-- **Debrief guide** — how to run the post-interview panel discussion
+```bash
+chmod +x run_gui.sh
+./run_gui.sh
+```
 
-## License
-MIT © [Alper Nabil Gabra Zakher](https://github.com/AlperNab)
+### 3) Run on Windows PowerShell
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\run_gui_windows.ps1
+```
+
+### 4) Open the GUI
+
+```text
+http://127.0.0.1:9127
+```
+
+---
+
+## 🛠️ Manual Installation
+
+Use this when you want full control instead of the run scripts.
+
+```bash
+cd interview-question-gen
+python -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+cp .env.example .env           # Windows: copy .env.example .env
+uvicorn app.main:app --host 127.0.0.1 --port 9127
+```
+
+---
+
+## 🔐 Environment Variables
+
+The project can be configured through the GUI settings screen or `.env`/environment variables.
+
+| Variable | Purpose |
+|---|---|
+| `AI_SUITE_HOST` | Host to bind the local app, usually `127.0.0.1`. |
+| `AI_SUITE_PORT` | Port for this project GUI, default `9127`. |
+| `AI_SUITE_DB` | SQLite database path for job history. |
+| `AI_SUITE_SECRET_KEY` | Secret used for local encryption/signing. Set this in production. |
+| `OPENAI_API_KEY` | Enables OpenAI-compatible cloud calls. |
+| `ANTHROPIC_API_KEY` | Enables Anthropic/Claude calls. |
+| `GEMINI_API_KEY` | Enables Google Gemini calls. |
+| `OPENROUTER_API_KEY` | Enables OpenRouter model routing. |
+| `MISTRAL_API_KEY` | Enables Mistral cloud models. |
+| `AZURE_OPENAI_ENDPOINT` | Azure OpenAI endpoint URL. |
+| `AZURE_OPENAI_API_KEY` | Azure OpenAI key. |
+| `AZURE_OPENAI_DEPLOYMENT` | Azure deployment name. |
+| `OLLAMA_BASE_URL` | Local Ollama OpenAI-compatible base URL. |
+| `LMSTUDIO_BASE_URL` | Local LM Studio OpenAI-compatible base URL. |
+| `VLLM_BASE_URL` | Local vLLM OpenAI-compatible base URL. |
+
+---
+
+## 🖥️ How to Use the GUI
+
+1. Open the local URL.
+2. Review the project purpose and workflow lanes.
+3. Fill the required input fields.
+4. Adjust only the project-related customization controls.
+5. Upload source files when needed.
+6. Choose `Rule Engine` for local deterministic output or select a configured LLM provider.
+7. Run the workflow.
+8. Review warnings, scorecards, and output sections.
+9. Export the result as Markdown, JSON, DOCX, or PDF.
+
+---
+
+## 🔄 Workflow
+
+- Role/JD
+- interview kit
+
+### Analysis Modules
+
+- jd_parse
+- interview_kit
+- fair_hiring_guardrails
+
+### Output Sections
+
+- Question bank
+- Rubric
+- Panel guide
+- Bias guardrails
+
+### Scorecards
+
+- Role fit
+- Evidence strength
+- Bias risk
+- Interview readiness
+- ATS readiness
+
+---
+
+## 📤 Outputs & Exports
+
+- interview packet
+- scorecards
+- question CSV
+
+The export system is designed for reviewable deliverables. For regulated or business-critical work, export drafts should be reviewed before sending to clients, customers, patients, employees, authorities, or production systems.
+
+---
+
+## 🔌 Real Integrations & Connector Policy
+
+Configured integrations in this standalone folder:
+
+- File upload
+- REST API
+- Export download
+- Job history
+
+### Real Connector Requirements
+
+- ATS/HRIS connector if syncing candidates or jobs
+- company hiring policy
+- human review for hiring decisions
+
+**Important:** this project does not simulate live data. If a workflow needs live Shopify, ATS, ERP, tax, customs, medical, security, market, map, analytics, or repository data, it must be connected with valid credentials and real API access. Missing connectors should produce clear setup errors rather than invented results.
+
+---
+
+## 🧯 Guardrails
+
+- Show uncertainty and confidence
+- Cite evidence from input when possible
+- Human review required for legal, medical, financial, hiring, or security decisions
+- Do not invent facts absent from input
+
+Recommended operating rules:
+
+- ✅ Use local models for private or sensitive files.
+- ✅ Keep API keys out of Git.
+- ✅ Review low-confidence or high-impact outputs manually.
+- ✅ Keep source files and exported deliverables organized under `data/`.
+- ❌ Do not treat AI output as legal, medical, tax, hiring, trading, or security authority without expert review.
+
+---
+
+## 🧪 Testing
+
+Run the local smoke test:
+
+```bash
+python tests/test_single_project.py
+```
+
+Run a health check after starting the server:
+
+```bash
+curl http://127.0.0.1:9127/api/health
+```
+
+Expected result: the API returns `ok: true` and identifies this project.
+
+---
+
+## 🧬 API Usage
+
+| Method | Endpoint | Use |
+|---|---|---|
+| `GET` | `/` | Opens the browser GUI. |
+| `GET` | `/api/health` | Health check for deployment and uptime monitoring. |
+| `GET` | `/api/projects` | Returns the local project configuration. |
+| `GET` | `/api/projects/{slug}` | Returns the project plugin metadata. |
+| `GET` | `/api/providers` | Lists configured providers and local/cloud options. |
+| `POST` | `/api/providers` | Saves provider settings/API keys. |
+| `POST` | `/api/upload` | Uploads source files for extraction or context. |
+| `POST` | `/api/run` | Runs the project workflow. |
+| `GET` | `/api/jobs` | Lists previous runs and job history. |
+| `GET` | `/api/jobs/{job_id}` | Reads one completed job. |
+| `GET` | `/api/jobs/{job_id}/export/{fmt}` | Exports a job as `md`, `json`, `docx`, or `pdf`. |
+| `GET` | `/api/project-local-status` | Verifies local project registration and implementation status. |
+
+### Minimal Run Request
+
+```bash
+curl -X POST http://127.0.0.1:9127/api/run \
+  -H "Content-Type: application/json" \
+  -d '{
+    "inputs": {
+      "work_brief": "Paste the source material or task details here"
+    },
+    "customization": {
+      "execution_mode": "Production"
+    },
+    "provider": "rule_engine"
+  }'
+```
+
+---
+
+## 📁 Folder Structure
+
+```text
+interview-question-gen/
+├─ app/                         # FastAPI backend, schemas, DB, providers, exports
+├─ static/                      # Browser GUI assets
+├─ plugins/                     # Project plugin JSON metadata
+├─ data/                        # SQLite DB, uploads, exports
+├─ tests/                       # Smoke tests
+├─ project_config.json          # Project-specific inputs, controls, UX, workflow
+├─ PROJECT_IMPLEMENTATION.md    # Implementation details and domain notes
+├─ requirements.txt             # Python dependencies
+├─ run_gui.sh                   # macOS/Linux/WSL launcher
+├─ run_gui_windows.ps1          # Windows PowerShell launcher
+└─ README.md                    # This file
+```
+
+---
+
+## 🚢 Deployment Notes
+
+For local/private deployment, run with `uvicorn` behind a reverse proxy if needed. For production:
+
+- Set `AI_SUITE_SECRET_KEY`.
+- Use HTTPS.
+- Store provider keys in environment variables or a proper secret manager.
+- Restrict upload sizes and allowed file types.
+- Back up the SQLite database or move job storage to a managed database.
+- Add authentication before exposing beyond localhost.
+- Enable logging and monitoring.
+
+Example production-style command:
+
+```bash
+AI_SUITE_HOST=0.0.0.0 AI_SUITE_PORT=9127 uvicorn app.main:app --host 0.0.0.0 --port 9127
+```
+
+---
+
+## 🧯 Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| `python` not found | Install Python 3.10+ and ensure it is on PATH. |
+| PowerShell blocks the script | Run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`. |
+| Port already in use | Set another port: `AI_SUITE_PORT=9200 ./run_gui.sh`. |
+| Provider fails | Verify API key, base URL, selected model, and account quota. |
+| Local model fails | Start Ollama/LM Studio/vLLM before running the workflow. |
+| PDF/DOCX export fails | Reinstall requirements and confirm optional export dependencies installed. |
+| Upload extraction is incomplete | Use cleaner source files or paste the important text into `work_brief`. |
+
+---
+
+## 🧭 Extension Points
+
+You can extend this project by editing:
+
+- `project_config.json` for inputs, settings, output sections, UX metadata, and workflow labels.
+- `plugins/interview-question-gen.json` for plugin metadata.
+- `app/domain_engine.py` for deterministic business logic.
+- `app/llm_gateway.py` for provider integrations.
+- `static/app.js` and `static/styles.css` for GUI behavior and component design.
+- `tests/test_single_project.py` for stronger project-specific tests.
+
+---
+
+## ✅ Final Implementation Status
+
+| Area | Status |
+|---|---|
+| Standalone folder GUI | ✅ Implemented |
+| FastAPI backend | ✅ Implemented |
+| Project-specific config | ✅ Implemented |
+| Local deterministic workflow | ✅ Implemented |
+| Local/cloud LLM routing | ✅ Implemented |
+| Uploads and exports | ✅ Implemented |
+| Job history | ✅ Implemented |
+| Real external connectors | ⚠️ Requires valid credentials/API setup |
+| Fake/simulated live data | ❌ Not allowed |
+
+---
+
+## 📜 License
+
+Use the license included in this folder. If no explicit license is present, treat the code as private until you choose one.
