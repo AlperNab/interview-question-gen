@@ -1,3 +1,29 @@
+# Interview Question Gen
+
+This folder has been upgraded into a **standalone real GUI project**.
+
+Run the project GUI:
+
+```bash
+./run_gui.sh
+```
+
+Windows:
+
+```powershell
+.\run_gui_windows.ps1
+```
+
+Default local URL: `http://127.0.0.1:9127`
+
+This project includes its own FastAPI backend, browser GUI, provider settings, local/cloud LLM routing, encrypted API-key storage, file uploads, job history, exports, and a project-specific plugin configuration.
+
+See `PROJECT_IMPLEMENTATION.md` and `project_config.json` for the applied project-specific features and customization controls.
+
+---
+
+## Original README
+
 # interview-question-gen
 
 > **Job description + CV → complete tailored interview question bank.** Behavioral, technical, situational questions with evaluation rubrics, scorecard, red flag probes, legal notes. Exports to Markdown.
